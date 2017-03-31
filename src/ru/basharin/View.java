@@ -89,7 +89,11 @@ public class View {
                     currentComparator = new ClientAgeComparator();
                     break;
                 case "2":
-                    currentComparator = new ClientNameComparator();
+                    if(currentComparator instanceof ClientNameComparator) {
+                        currentComparator = currentComparator.reversed();
+                    } else {
+                        currentComparator = new ClientNameComparator();
+                    }
                     break;
                 case "3":
                     currentComparator = new ClientLoginComparator();
