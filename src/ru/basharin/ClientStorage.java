@@ -16,6 +16,8 @@ public class ClientStorage {
         this.fileName = fileName;
     }
 
+
+
     public Map<String, Client> readAllClients() throws FileNotFoundException {
         Map<String, Client> result = new HashMap<>();
         try (Scanner scanner = new Scanner(new FileInputStream(fileName))) {
