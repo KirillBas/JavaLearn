@@ -9,18 +9,16 @@ import java.util.Scanner;
  * Created by drbah on 24.02.2017.
  */
 public class ClientStorage {
-    private final static String CLIENT_FILE_NAME = "User.bin";
-    private final String fileName;
+    private final File file;
+    private static final String CLIENT_FILE_NAME = "user.bin";
 
-    public ClientStorage(String fileName) {
-        this.fileName = fileName;
+    public ClientStorage(File file) {
+        this.file = file;
     }
-
-
 
     public Map<String, Client> readAllClients() throws FileNotFoundException {
         Map<String, Client> result = new HashMap<>();
-        try (Scanner scanner = new Scanner(new FileInputStream(fileName))) {
+        try (Scanner scanner = new Scanner(new FileInputStream(file))) {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] words = line.split(" ");
@@ -35,7 +33,7 @@ public class ClientStorage {
     }
 
     public void writeClientsToFile(Map<String, Client> clients) throws IOException {
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileName))) {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
             for (String login : clients.keySet()) {
                 Client client = clients.get(login);
                 bufferedWriter.append(client.getLogin())

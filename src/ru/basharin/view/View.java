@@ -1,30 +1,29 @@
-package ru.basharin;
+package ru.basharin.view;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
-import com.sun.xml.internal.bind.v2.TODO;
+import ru.basharin.Client;
+import ru.basharin.ClientRegistrant;
+import ru.basharin.ClientStorage;
 import ru.basharin.comparators.ClientAgeComparator;
 import ru.basharin.comparators.ClientLoginComparator;
 import ru.basharin.comparators.ClientNameComparator;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.*;
-import java.util.regex.Matcher;
 
 /**
  * Created by drbah on 10.03.2017.
  */
 public class View {
-
-    private Scanner scanner = new Scanner(System.in);
-    private ClientRegistrant clientRegistrant = new ClientRegistrant(scanner);
-    private ClientStorage clientStorage = new ClientStorage("test.txt");
+    private final Scanner scanner;
+    private final ClientRegistrant clientRegistrant;
+    private final ClientStorage clientStorage;
     private Client client = null;
 
-    private void printFileMenu() {
-        System.out.println("Нажмите 1 для ввода имени файла базы данных");
-        System.out.println("Нажмите 2 для создания файла базы данных");
+    public View(Scanner scanner, ClientStorage clientStorage, ClientRegistrant clientRegistrant) {
+        this.clientStorage = clientStorage;
+        this.scanner = scanner;
+        this.clientRegistrant = clientRegistrant;
     }
 
     private void printGreetingMenu() {
@@ -43,58 +42,6 @@ public class View {
             System.out.println("Нажмите 1 для вывода всех зарегестрированных пользователей");
         }
         System.out.println("Нажмите # для выхода");
-    }
-
-    void doWorkWhithFile() {
-        String input;
-        while(true) {
-            printFileMenu();
-            input = scanner.nextLine();
-            switch (input) {
-                case "1":
-                    checkFile();
-                    break;
-                case "2":
-                    createNewFile();
-                    break;
-                case "#":
-                    return;
-            }
-        }
-    }
-
-    // TODO: 04.04.2017 Меняется поведение приложения. Предусмотреть возможность выбора базы данных и работы с ней
-    private void createNewFile() {
-        System.out.println("Введите имя нового файла.");
-        String input = scanner.nextLine();
-        File file = new File(input);
-        if(input.equals("#")) {
-            return;
-        }
-        try {
-            file.createNewFile();
-            run();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void checkFile() {
-        String input;
-        while (true) {
-            System.out.println("Введите имя файла");
-            input = scanner.nextLine();
-            while (true) {
-                if(input.equals("#")){
-                    return;
-                }
-                if(input.equals("test.txt")){
-                    run();
-                } else {
-                    System.out.println("Проверте правильность написания файла.");
-                }
-            }
-        }
     }
 
     private void doWorkWithClient() {
@@ -150,7 +97,7 @@ public class View {
                     currentComparator = new ClientAgeComparator();
                     break;
                 case "2":
-                    if(currentComparator instanceof ClientNameComparator) {
+                    if (currentComparator instanceof ClientNameComparator) {
                         currentComparator = currentComparator.reversed();
                     } else {
                         currentComparator = new ClientNameComparator();

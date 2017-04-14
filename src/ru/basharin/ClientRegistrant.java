@@ -16,9 +16,9 @@ public class ClientRegistrant {
 
     private ClientStorage clientStorage;
 
-    public ClientRegistrant(Scanner scanner) {
+    public ClientRegistrant(Scanner scanner, ClientStorage clientStorage) {
         this.scanner = scanner;
-        this.clientStorage = new ClientStorage("test.txt");
+        this.clientStorage = clientStorage;
         try {
             clientsInfo.putAll(clientStorage.readAllClients());
         } catch (FileNotFoundException e) {
@@ -30,6 +30,7 @@ public class ClientRegistrant {
         return clientsInfo;
     }
 
+    // TODO: 14.04.2017 перенести все что касается scanner в View, остальное оставить
     public void signUp() {
         System.out.println("Регистрация нового пользователя");
         System.out.println("*******************************");
@@ -194,7 +195,7 @@ public class ClientRegistrant {
 
     public void changeClientName(Client client) {
         String newName = null;
-        while (true){
+        while (true) {
             System.out.println("Для изменения имени введите новое имя:");
             newName = scanner.nextLine();
             clientsInfo.get(client.getLogin()).setName(newName);
@@ -203,24 +204,25 @@ public class ClientRegistrant {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if(newName.equals("#")) {
+            if (newName.equals("#")) {
                 return;
             }
             System.out.println("Спасибо за новое имя: " + newName);
         }
     }
+
     public void changeClientAge(Client client) {
         String newAge;
         while (true) {
             System.out.println("Для изменения возраста введите новый возраст:");
-            newAge =scanner.nextLine();
+            newAge = scanner.nextLine();
             clientsInfo.get(client.getLogin()).setAge(Integer.parseInt(newAge));
             try {
                 clientStorage.writeClientsToFile(clientsInfo);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if(newAge.equals("#")) {
+            if (newAge.equals("#")) {
                 return;
             }
             System.out.println("Теперь я моложе? " + newAge);
